@@ -22,4 +22,5 @@ END$$
 
 DELIMITER ;
 
-
+select * from users;
+select * from rooms where owner_id ="1";
