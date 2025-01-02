@@ -3,7 +3,7 @@ import "../styles/Owner.css";
 import axios from "axios";
 import { HiOutlinePencil } from "react-icons/hi";
 import { MdDeleteForever } from "react-icons/md";
-
+import { MdCloseFullscreen } from "react-icons/md";
 export default function Owner() {
     const [roomDetails, setRoomDetails] = useState([]);
     const ownerId = localStorage.getItem('user_id');
@@ -90,12 +90,21 @@ export default function Owner() {
           console.error('Error updating room:', error);
         }
       };
-
+      const [isDeleted, setIsDeleted] = useState(true); // State to toggle the class
+  const toggleDelete = (value) => {
+    setIsDeleted(value);
+  };
     return (
         <>
             <nav>Dashboard<p style={{ float: "right" }}>owner</p></nav>
-            <div className="details_table">
-  <table border="1" style={{ borderCollapse: "collapse", width: "100%" }}>
+            <div className={`details_table ${isDeleted ? "" : "blur-background"} `}
+            >
+              <div className='table-header'>
+              <h3>Room Details</h3>
+              <div className="add-button" onClick={()=>{toggleDelete(false)}}>Add</div>
+              </div>
+              <br />
+  <table className="owner-table"border="1" style={{ borderCollapse: "collapse", width: "100%" }}>
     <thead>
       <tr>
         <th>Area</th>
@@ -166,10 +175,13 @@ export default function Owner() {
       )}
     </tbody>
   </table>
+  
 </div>
 
-<div className="addDetails hidden">
-  <h2>Add available rooms</h2>
+<div className={`addDetails ${isDeleted ? "hidden" : ""}`
+} >
+  <h2>Add available rooms</h2><MdCloseFullscreen
+   onClick={()=>{toggleDelete(true)}}/>
   <form onSubmit={handleSubmit}>
     <input
       type="text"
